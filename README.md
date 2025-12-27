@@ -16,7 +16,9 @@ An AI-powered code reviewer that analyzes AI agent codebases on public GitHub re
 - **🔄 Multi-Agent Pipeline** - 6 specialized agents working in sequence
 - **📊 OpenTelemetry Tracing** - Built-in observability with DevUI support
 
-## 🏗️ Architecture
+## 🏗️ Solution Architecture 
+<img width="1009" height="586" alt="image (1)" src="https://github.com/user-attachments/assets/a89b2044-4fec-45e4-9824-14bea63269d8" />
+
 
 ```
 ┌─────────────┐     WebSocket      ┌─────────────────────────────────────┐
