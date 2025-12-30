@@ -2,7 +2,7 @@
 
 An AI-powered code reviewer that analyzes AI agent codebases on public GitHub repositories.
 
-**Powered by:** Microsoft Agent Framework + OpenAI + MCP Servers
+**Powered by:** Microsoft Agent Framework + OpenAI + MCP Servers + **Agent-lightning** 🚀
 
 ![AgentLens Demo](docs/demo.png)
 
@@ -10,11 +10,12 @@ An AI-powered code reviewer that analyzes AI agent codebases on public GitHub re
 
 - **🔴 Slop Detection** - Identifies anti-patterns and code smells in agent code
 - **🔒 Security Analysis** - Flags exposed keys, missing error handling
-- **💰 Token Consumption** - Analyzes cost optimization opportunities  
+- **💰 Token Consumption** - Analyzes cost optimization opportunities
 - **✅ Best Practices** - Checks compliance with LangChain, OpenAI, Anthropic standards
 - **📚 MCP-Powered** - Fetches live documentation from MS Learn and LangChain MCP servers
 - **🔄 Multi-Agent Pipeline** - 6 specialized agents working in sequence
 - **📊 OpenTelemetry Tracing** - Built-in observability with DevUI support
+- **⚡ Agent-lightning Integration** - RL-powered continuous optimization and performance improvement
 
 ## 🏗️ Solution Architecture 
 <img width="1009" height="586" alt="image (1)" src="https://github.com/user-attachments/assets/a89b2044-4fec-45e4-9824-14bea63269d8" />
@@ -95,20 +96,42 @@ Open http://localhost:8080 to see:
 - OpenTelemetry spans
 - Tool calls and responses
 
+## ⚡ Agent-lightning Training & Optimization
+
+Train and optimize the multi-agent pipeline using reinforcement learning:
+
+```bash
+# Run performance benchmark
+python train_agent.py --mode benchmark
+
+# Train across multiple repositories
+python train_agent.py --mode train --epochs 5
+```
+
+The Agent-lightning integration provides:
+- **Automatic quality scoring** of analysis reports
+- **Reinforcement learning** optimization
+- **Prompt improvement** through RL
+- **Performance benchmarking** tools
+
+📖 See [AGENT_LIGHTNING.md](AGENT_LIGHTNING.md) for detailed setup and usage.
+
 ## 📁 Project Structure
 
 ```
 AgentLens/
-├── main.py              # FastAPI server with WebSocket
-├── analyzer.py          # Multi-agent analysis pipeline
-├── github_client.py     # GitHub API client
-├── devui.py             # DevUI for agent debugging
-├── requirements.txt     # Python dependencies
-├── .env.example         # Environment template
+├── main.py                 # FastAPI server with WebSocket
+├── analyzer.py             # Multi-agent analysis pipeline (Agent-lightning instrumented)
+├── train_agent.py          # Agent-lightning training loop & benchmarks
+├── github_client.py        # GitHub API client
+├── devui.py                # DevUI for agent debugging
+├── requirements.txt        # Python dependencies (includes agentlightning)
+├── .env.example            # Environment template
+├── AGENT_LIGHTNING.md      # Agent-lightning integration guide
 └── static/
-    ├── index.html       # Frontend UI
-    ├── styles.css       # Styling
-    └── app.js           # Frontend logic
+    ├── index.html          # Frontend UI
+    ├── styles.css          # Styling
+    └── app.js              # Frontend logic
 ```
 
 ## 🤖 Agent Pipeline
