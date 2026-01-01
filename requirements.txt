@@ -6,6 +6,9 @@ python-multipart>=0.0.18
 # Microsoft Agent Framework
 agent-framework[all]
 
+# Agent Lightning (APO - Automatic Prompt Optimization)
+agentlightning[apo]
+
 # HTTP client
 httpx>=0.28.0
 
@@ -14,3 +17,7 @@ python-dotenv>=1.0.0
 
 # Markdown
 markdown>=3.7
+
+# Tracing
+opentelemetry-api
+opentelemetry-sdk

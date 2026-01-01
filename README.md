@@ -153,10 +153,41 @@ AgentLens/
 
 - **Backend:** FastAPI, Python 3.11+
 - **Agent Framework:** Microsoft Agent Framework (unified AutoGen + Semantic Kernel)
+- **Agent Optimization:** Microsoft Agent Lightning (APO)
 - **LLM:** OpenAI GPT-4o
 - **MCP Servers:** MS Learn, LangChain Docs
 - **Tracing:** OpenTelemetry
 - **Frontend:** Vanilla HTML/CSS/JS
+
+## ⚡ Agent Lightning - Automatic Prompt Optimization
+
+AgentLens uses [Microsoft Agent Lightning](https://github.com/microsoft/agent-lightning) for automatic prompt optimization (APO).
+
+### Train Agent Prompts
+
+```bash
+# Run APO training to optimize agent prompts
+python train_prompts.py --epochs 3 --runners 4
+```
+
+This will:
+1. **Evaluate** - Run agents on sample repos
+2. **Critique** - LLM generates feedback on prompt quality
+3. **Rewrite** - Generate improved prompts automatically
+
+Optimized prompts are saved to `prompts/` directory.
+
+### How APO Works
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│  Evaluate   │ ───► │  Critique   │ ───► │   Rewrite   │
+│   Prompts   │      │   (LLM)     │      │   Prompts   │
+└─────────────┘      └─────────────┘      └─────────────┘
+       ▲                                        │
+       └────────────────────────────────────────┘
+                    (repeat)
+```
 
 ## 📝 License
 
@@ -165,5 +196,6 @@ MIT License
 ## 🙏 Acknowledgments
 
 - [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
+- [Microsoft Agent Lightning](https://github.com/microsoft/agent-lightning)
 - [OpenAI](https://openai.com)
 - [MCP Protocol](https://modelcontextprotocol.io)
