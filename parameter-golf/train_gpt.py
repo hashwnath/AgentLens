@@ -96,6 +96,9 @@ class Hyperparameters:
     # Magnitude pruning before quantization.
     prune_frac = float(os.environ.get("PRUNE_FRAC", 0.03))
 
+    # QAT (quantization-aware training).
+    qat_enabled = bool(int(os.environ.get("QAT_ENABLED", "1")))
+
     # Optimizer hyperparameters.
     embed_lr = float(os.environ.get("EMBED_LR", 0.6))
     head_lr = float(os.environ.get("HEAD_LR", 0.008))
@@ -597,9 +600,21 @@ class RMSNorm(nn.Module):
 
 class CastedLinear(nn.Linear):
     # Keep weights in fp32 for optimizer/state quality, cast at matmul time for bf16 compute.
+    _qat: bool = False
+
     def forward(self, x: Tensor) -> Tensor:
+        w = self.weight
+        if self._qat and self.training and w.ndim == 2:
+            w_f = w.float()
+            amax = w_f.abs().amax(dim=-1, keepdim=True).clamp_min(1e-12)
+            scale = amax / 127.0
+            # Int6-equivalent: quantize to int8 but round to multiples of 4 (64 levels)
+            q = (torch.round(w_f / scale) / 4).round() * 4
+            q = q.clamp(-128, 124)
+            w_q = q * scale
+            w = w + (w_q - w_f).detach()  # STE: gradient flows through as identity
         bias = self.bias.to(x.dtype) if self.bias is not None else None
-        return F.linear(x, self.weight.to(x.dtype), bias)
+        return F.linear(x, w.to(x.dtype), bias)
 
 
 def restore_low_dim_params_to_fp32(module: nn.Module) -> None:
@@ -995,6 +1010,10 @@ def main() -> None:
         if isinstance(module, CastedLinear):
             module.float()
     restore_low_dim_params_to_fp32(base_model)
+    if args.qat_enabled:
+        for module in base_model.modules():
+            if isinstance(module, CastedLinear):
+                module._qat = True
     compiled_model = torch.compile(base_model, dynamic=False, fullgraph=True)
     model: nn.Module = DDP(compiled_model, device_ids=[local_rank], broadcast_buffers=False) if distributed else compiled_model
 
