@@ -897,7 +897,9 @@ def main() -> None:
 
     code = Path(__file__).read_text(encoding="utf-8")
     args = Hyperparameters()
-    zeropower_via_newtonschulz5 = torch.compile(zeropower_via_newtonschulz5)
+    use_compile = int(os.environ.get("TORCH_COMPILE", "1"))
+    if use_compile:
+        zeropower_via_newtonschulz5 = torch.compile(zeropower_via_newtonschulz5)
 
     # -----------------------------
     # DISTRIBUTED + CUDA SETUP
@@ -1015,7 +1017,10 @@ def main() -> None:
         for module in base_model.modules():
             if isinstance(module, CastedLinear):
                 module._qat = True
-    compiled_model = torch.compile(base_model, dynamic=False, fullgraph=True)
+    if use_compile:
+        compiled_model = torch.compile(base_model, dynamic=False, fullgraph=True)
+    else:
+        compiled_model = base_model
     model: nn.Module = DDP(compiled_model, device_ids=[local_rank], broadcast_buffers=False) if distributed else compiled_model
 
     # Optimizer split:
