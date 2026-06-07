@@ -47,4 +47,5 @@ env/
 .env.*.local
 
 # Kronos source clone (local only — run kronos/setup.sh to recreate)
+.kronos-src
 .kronos-src/
